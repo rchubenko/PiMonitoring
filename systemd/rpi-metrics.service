@@ -1,0 +1,21 @@
+[Unit]
+Description=Raspberry Pi vcgencmd Prometheus textfile collector
+After=local-fs.target
+
+[Service]
+Type=oneshot
+User=pi-metrics
+Group=video
+SupplementaryGroups=video node-exp
+ExecStart=/usr/local/libexec/pi-monitoring-rpi-metrics
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/usr /bin /sbin /lib /lib64 /proc /sys
+ReadWritePaths=/var/lib/node_exporter/textfile_collector
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

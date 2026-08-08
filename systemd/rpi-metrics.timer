@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Raspberry Pi metrics collector every 15 seconds
+
+[Timer]
+OnBootSec=15s
+OnUnitActiveSec=15s
+AccuracySec=1s
+RandomizedDelaySec=0
+Persistent=false
+
+[Install]
+WantedBy=timers.target
