@@ -12,7 +12,7 @@ source /etc/os-release
 [[ $(uname -m) == aarch64 ]] || { printf 'ERROR: target architecture must be aarch64\n' >&2; exit 1; }
 
 id node-exp &>/dev/null || useradd --system --no-create-home --shell /usr/sbin/nologin node-exp
-install -d -o root -g node-exp -m 0755 /var/lib/node_exporter/textfile_collector
+install -d -m 0755 /var/lib/node_exporter/textfile_collector
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
 curl --fail --silent --show-error --location "$URL" -o "$tmp/$ARCHIVE"
 curl --fail --silent --show-error --location "$SUM_URL" -o "$tmp/sha256sums.txt"

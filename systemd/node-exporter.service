@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 User=node-exp
 Group=node-exp
-ExecStart=/usr/local/bin/node_exporter --web.listen-address=0.0.0.0:9100 --collector.textfile.directory=/var/lib/node_exporter/textfile_collector --collector.disable-defaults --collector.textfile --collector.cpu --collector.cpufreq --collector.diskstats --collector.filesystem --collector.loadavg --collector.meminfo --collector.netdev --collector.stat --collector.time --collector.uname --collector.vmstat
+ExecStart=/usr/local/bin/node_exporter --web.listen-address=0.0.0.0:9100 --collector.textfile.directory=/var/lib/node_exporter/textfile_collector --collector.disable-defaults --collector.textfile --collector.cpu --collector.cpufreq --collector.diskstats --collector.filesystem --collector.hwmon --collector.loadavg --collector.meminfo --collector.netdev --collector.stat --collector.time --collector.uname --collector.vmstat
 Restart=on-failure
 NoNewPrivileges=true
 PrivateTmp=true
