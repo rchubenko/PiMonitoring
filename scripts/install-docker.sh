@@ -16,4 +16,8 @@ apt-cache madison docker-ce | grep -F "$DOCKER_VERSION" >/dev/null || { printf '
 apt-get install -y "docker-ce=$DOCKER_VERSION" "docker-ce-cli=$DOCKER_VERSION" containerd.io docker-buildx-plugin docker-compose-plugin
 apt-mark hold docker-ce docker-ce-cli
 systemctl enable --now docker
+if [[ -n ${SUDO_USER:-} && ${SUDO_USER} != root ]]; then
+  usermod -aG docker "$SUDO_USER"
+  printf 'Added %s to the docker group; start a new login session before non-root Docker commands.\n' "$SUDO_USER"
+fi
 printf 'Docker Engine %s installed\n' "$DOCKER_VERSION"

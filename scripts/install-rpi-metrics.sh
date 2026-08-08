@@ -4,7 +4,9 @@ set -Eeuo pipefail
 command -v vcgencmd >/dev/null || { printf 'ERROR: vcgencmd is required on Raspberry Pi OS\n' >&2; exit 1; }
 getent group video >/dev/null || { printf 'ERROR: video group is required for vcgencmd access\n' >&2; exit 1; }
 id pi-metrics &>/dev/null || useradd --system --no-create-home --shell /usr/sbin/nologin --gid video pi-metrics
-install -d -o root -g node-exp -m 0770 /var/lib/node_exporter/textfile_collector
+install -d -o pi-metrics -g node-exp -m 0755 /var/lib/node_exporter/textfile_collector
+chown pi-metrics:node-exp /var/lib/node_exporter/textfile_collector
+chmod 0755 /var/lib/node_exporter/textfile_collector
 usermod -a -G node-exp pi-metrics
 install -o root -g root -m 0755 exporters/rpi-metrics.sh /usr/local/libexec/pi-monitoring-rpi-metrics
 install -o root -g root -m 0644 systemd/rpi-metrics.service /etc/systemd/system/rpi-metrics.service

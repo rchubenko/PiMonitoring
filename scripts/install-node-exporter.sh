@@ -12,14 +12,15 @@ source /etc/os-release
 [[ $(uname -m) == aarch64 ]] || { printf 'ERROR: target architecture must be aarch64\n' >&2; exit 1; }
 
 id node-exp &>/dev/null || useradd --system --no-create-home --shell /usr/sbin/nologin node-exp
-install -d -o root -g node-exp -m 0770 /var/lib/node_exporter/textfile_collector
+install -d -o root -g node-exp -m 0755 /var/lib/node_exporter/textfile_collector
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
 curl --fail --silent --show-error --location "$URL" -o "$tmp/$ARCHIVE"
 curl --fail --silent --show-error --location "$SUM_URL" -o "$tmp/sha256sums.txt"
 (cd "$tmp" && grep "  $ARCHIVE$" sha256sums.txt | sha256sum -c -)
 tar -xzf "$tmp/$ARCHIVE" -C "$tmp"
-install -o root -g root -m 0755 "$tmp/node_exporter-${NODE_EXPORTER_VERSION}/node_exporter" /usr/local/bin/node_exporter
+install -o root -g root -m 0755 "$tmp/node_exporter-${NODE_EXPORTER_VERSION}.linux-arm64/node_exporter" /usr/local/bin/node_exporter
 install -o root -g root -m 0644 "$(dirname "$0")/../systemd/node-exporter.service" /etc/systemd/system/node-exporter.service
 systemctl daemon-reload
 systemctl enable --now node-exporter.service
+systemctl restart node-exporter.service
 printf 'node_exporter %s installed\n' "$NODE_EXPORTER_VERSION"

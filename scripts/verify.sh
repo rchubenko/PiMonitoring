@@ -10,7 +10,7 @@ check /usr/local/bin/node_exporter --version
 check systemctl is-active --quiet node-exporter.service
 check curl -fsS http://127.0.0.1:9100/metrics
 check systemctl is-active --quiet rpi-metrics.timer
-check systemctl start rpi-metrics.service
+check sudo systemctl start rpi-metrics.service
 [[ -s /var/lib/node_exporter/textfile_collector/rpi.prom ]] && ok 'rpi.prom exists' || bad 'rpi.prom exists'
 required=(rpi_temperature_celsius rpi_cpu_frequency_hertz rpi_undervoltage_now rpi_undervoltage_occurred rpi_frequency_capped_now rpi_frequency_capped_occurred rpi_throttled_now rpi_throttled_occurred rpi_soft_temperature_limit_now rpi_soft_temperature_limit_occurred)
 for metric in "${required[@]}"; do grep -Eq "^${metric}([ {]|$)" /var/lib/node_exporter/textfile_collector/rpi.prom && ok "$metric in textfile" || bad "$metric in textfile"; done
